@@ -1,51 +1,49 @@
-;(function($){
+(function($){
 	$.fn.extend({
-		'autoTab':function(options){
+		autoTab:function(options){
 			var defaults={
-				currentClass:"hover",
+				current:"hover",
 				tabLi:".tabBar>li",
-				tabCont:".tab_conts>div",
-				eventType:"click",
-				time:2000
-			};
-			var endoptions=$.extend(defaults,options);
+				tabDiv:".tab_conts>div",
+				eventDefault:"click",
+				scrolltime:2000,
+				num:3
+			}
+			var options=$.extend(defaults,options);
+			var index=0;
 			var timer=null;
-			var index=1;
 			this.each(function(){
-				var _this=$(this);
-				//点击选项卡切换
-				_this.find(endoptions.tabLi).each(function(i){
-					$(this).on(endoptions.eventType,function(){
-						$(this).addClass(endoptions.currentClass).siblings().removeClass(endoptions.currentClass);
-						_this.find(endoptions.tabCont).eq(i).show().siblings().hide();
-						index=i+1;
-						console.log(index);
-					})
-				})
-				//控制两个切换不冲突
-				_this.mouseover(function(){
-					window.clearInterval(timer);
-				})
-				_this.mouseout(function(){
-					auto();
-				});
+				var $this=$(this);
 				//自动轮播切换
-				function auto(){
-					window.clearInterval(timer);
+				function autoScroll(){
 					timer=setInterval(function(){
 						index++;
-						if(index>3){
-							index=1;
+						if(index>=options.num){
+							index=0;
 						}
-						_this.find(endoptions.tabLi).eq(index-1).addClass(endoptions.currentClass).siblings().removeClass(endoptions.currentClass);
-						_this.find(endoptions.tabCont).eq(index-1).show().siblings().hide();
-					},endoptions.time);
+						$this.find(options.tabLi).eq(index).addClass(options.current).siblings().removeClass(options.current);
+						$this.find(options.tabDiv).eq(index).show().siblings().hide();
+					},options.scrolltime);
 				}
+				autoScroll();
+				//控制两个切换不冲突
+				$this.mouseover(function(event) {
+					clearInterval(timer);
+				});
+				$this.mouseout(function(){
+					autoScroll();
+				});
+				//点击选项卡切换
+				$this.find(options.tabLi).each(function(i){
+					$(this).on(options.eventDefault,function(){
+						$(this).addClass(options.current).siblings().removeClass(options.current);
+						index=i;
+						$this.find(options.tabDiv).eq(index).show().siblings().hide();
+					})
+				})
 
-				auto();
 			})
 			return this;
 		}
 	})
 })(jQuery)
-

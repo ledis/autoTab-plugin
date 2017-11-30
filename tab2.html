@@ -65,7 +65,7 @@
 	</style>
 </head>
 <body >
-<div class="tabBox">
+<div class="tabBox tabBox1">
 	<ul class="tabBar">
 		<li class="hover">标题一</li>
 		<li>标题二</li>
@@ -78,7 +78,7 @@
 	</div>
 </div>
 <br/>
-<div class="tabBox2">
+<div class="tabBox tabBox2">
 	<ul class="tabBar">
 		<li class="hover">标题一</li>
 		<li>标题二</li>
@@ -94,15 +94,12 @@
 <script src="js/tab.js"></script>
 <script type="text/javascript">
 
-$(".tabBox").autoTab({
-	//各种参数，各种属性
-	time:1000
-});
-$(".tabBox2").autoTab({
-	//各种参数，各种属性
-	time:2000
-});
-
+$(function(){
+	$(".tabBox1").autoTab()
+	$(".tabBox2").autoTab({
+		scrolltime:1000
+	})
+})
 </script>
 </body>
 </html>
